@@ -1,0 +1,28 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+driver = webdriver.Chrome()
+driver.get("https://demoqa.com/radio-button")
+driver.maximize_window()
+
+wait = WebDriverWait(driver, 5)
+
+# Select "Yes"
+yes_radio = wait.until(EC.element_to_be_clickable((By.XPATH, "//label[text()='Yes']")))
+yes_radio.click()
+
+# Check result
+yes_result = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "text-success")))
+print("Selected radio button result:", yes_result.text)
+
+# Select "Impressive"
+impressive_radio = wait.until(EC.element_to_be_clickable((By.XPATH, "//label[text()='Impressive']")))
+impressive_radio.click()
+
+# Check result
+impressive_result = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "text-success")))
+print("Selected radio button result:", impressive_result.text)
+
+driver.quit()
