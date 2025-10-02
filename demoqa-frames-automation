@@ -1,0 +1,28 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+driver = webdriver.Chrome()
+driver.get("https://demoqa.com/frames")
+driver.maximize_window()
+
+wait = WebDriverWait(driver, 5)
+
+# Switch to first frame by ID
+wait.until(EC.frame_to_be_available_and_switch_to_it((By.ID, "frame1")))
+frame1_heading = wait.until(EC.presence_of_element_located((By.ID, "sampleHeading")))
+print("Text in frame1:", frame1_heading.text)
+
+# Switch back to main content
+driver.switch_to.default_content()
+
+# Switch to second frame by ID
+wait.until(EC.frame_to_be_available_and_switch_to_it((By.ID, "frame2")))
+frame2_heading = wait.until(EC.presence_of_element_located((By.ID, "sampleHeading")))
+print("Text in frame2:", frame2_heading.text)
+
+# Switch back to main content
+driver.switch_to.default_content()
+
+driver.quit()
