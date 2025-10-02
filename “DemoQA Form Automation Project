@@ -1,0 +1,36 @@
+from selenium import webdriver
+import time
+from selenium.webdriver.common.by import By
+
+# open Chrome
+driver = webdriver.Chrome()
+driver.get("https://demoqa.com/automation-practice-form")
+driver.maximize_window()
+time.sleep(2)
+
+# fill first and last name
+driver.find_element(By.ID, "firstName").send_keys("Masfie")
+driver.find_element(By.ID, "lastName").send_keys("Ahmed")
+
+# fill email
+driver.find_element(By.ID, "userEmail").send_keys("masfie@example.com")
+
+# select gender
+driver.find_element(By.XPATH, "//label[text()='Male']").click()
+
+# fill mobile number
+driver.find_element(By.ID, "userNumber").send_keys("01712345678")
+
+# select hobby (Sports)
+driver.find_element(By.XPATH, "//label[text()='Sports']").click()
+
+# enter address
+driver.find_element(By.ID, "currentAddress").send_keys("Sylhet, Bangladesh")
+
+# submit button
+Submit = driver.find_element(By.ID, "submit")
+Submit.click()
+
+# wait a bit and close browser
+time.sleep(5)
+driver.quit()
