@@ -1,0 +1,28 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+
+driver = webdriver.Chrome()
+driver.get("https://www.saucedemo.com/")
+
+# Login
+driver.find_element(By.ID, "user-name").send_keys("standard_user")
+driver.find_element(By.ID, "password").send_keys("secret_sauce")
+driver.find_element(By.ID, "login-button").click()
+time.sleep(7)  # <- increased sleep to 4 seconds
+
+# Add products and get names
+product1_name = driver.find_element(By.XPATH, "//div[text()='Sauce Labs Backpack']").text
+driver.find_element(By.ID, "add-to-cart-sauce-labs-backpack").click()
+
+product2_name = driver.find_element(By.XPATH, "//div[text()='Sauce Labs Bike Light']").text
+driver.find_element(By.ID, "add-to-cart-sauce-labs-bike-light").click()
+
+print("Products added to cart:", product1_name, ",", product2_name)
+
+# Logout
+driver.find_element(By.ID, "react-burger-menu-btn").click()
+time.sleep(1)
+driver.find_element(By.ID, "logout_sidebar_link").click()
+
+driver.quit()
