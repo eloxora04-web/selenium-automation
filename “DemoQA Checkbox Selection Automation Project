@@ -1,0 +1,32 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+driver = webdriver.Chrome()
+driver.get("https://demoqa.com/checkbox")
+driver.maximize_window()
+
+wait = WebDriverWait(driver, 5)
+
+# Expand all folders
+expand_all = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[title='Expand all']")))
+expand_all.click()
+
+# Checkboxes to select
+checkboxes = ["Desktop", "Documents", "Downloads"]
+
+for name in checkboxes:
+    element = wait.until(EC.element_to_be_clickable((By.XPATH, f"//span[text()='{name}']/ancestor::label")))
+    driver.execute_script("arguments[0].scrollIntoView();", element)  # scroll into view
+    element.click()
+
+# Wait until at least one selection appears
+wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "span.text-success")))
+
+# Print selected items
+selected = driver.find_elements(By.CSS_SELECTOR, "span.text-success")
+for item in selected:
+    print("Selected checkbox:", item.text)
+
+driver.quit()
