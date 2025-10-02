@@ -1,0 +1,37 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+
+driver = webdriver.Chrome()
+driver.maximize_window()
+driver.get("https://www.wikipedia.org/")
+
+wait = WebDriverWait(driver, 10)
+
+# Search box
+search_box = wait.until(EC.presence_of_element_located((By.ID, "searchInput")))
+search_box.send_keys("Selenium")
+search_box.submit()
+
+# Wait for first heading
+first_heading = wait.until(EC.presence_of_element_located((By.ID, "firstHeading")))
+print("First heading:", first_heading.text)
+
+# Wait for content container
+content_div = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "mw-parser-output")))
+
+# Get first non-empty paragraph
+paragraphs = content_div.find_elements(By.TAG_NAME, "p")
+first_paragraph_text = ""
+for p in paragraphs:
+    text = p.text.strip()
+    if text:
+        first_paragraph_text = text
+        break
+
+print("First paragraph:", first_paragraph_text)
+
+time.sleep(2)
+driver.quit()
