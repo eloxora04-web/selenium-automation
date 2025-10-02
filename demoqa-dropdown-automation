@@ -1,0 +1,34 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+
+driver = webdriver.Chrome()
+driver.get("https://demoqa.com/select-menu")
+driver.maximize_window()
+
+wait = WebDriverWait(driver, 5)
+
+# Old Select Menu (real <select>)
+old_select = wait.until(EC.presence_of_element_located((By.ID, "oldSelectMenu")))
+for option in old_select.find_elements(By.TAG_NAME, "option"):
+    if option.text == "Red":
+        option.click()
+        print("OldSelectMenu selected:", option.text)
+        break
+
+# Custom dropdown: click to open
+dropdown_button = wait.until(EC.element_to_be_clickable((By.ID, "withOptGroup")))
+dropdown_button.click()
+time.sleep(1)  # wait for options to render
+
+# Locate the option
+option_element = driver.find_element(By.XPATH, "//div[text()='Group 2, option 1']")
+option_text = option_element.text  # get text BEFORE clicking
+option_element.click()
+
+print("Custom dropdown selected:", option_text)
+
+time.sleep(2)
+driver.quit()
