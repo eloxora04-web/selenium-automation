@@ -1,0 +1,38 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+driver = webdriver.Chrome()
+driver.get("https://demoqa.com/alerts")
+driver.maximize_window()
+
+wait = WebDriverWait(driver, 5)
+
+# 1. Simple Alert
+alert_button = wait.until(EC.element_to_be_clickable((By.ID, "alertButton")))
+alert_button.click()
+alert = driver.switch_to.alert
+print("Alert text:", alert.text)
+alert.accept()  # click OK
+
+# 2. Confirm Alert
+confirm_button = wait.until(EC.element_to_be_clickable((By.ID, "confirmButton")))
+confirm_button.click()
+confirm_alert = driver.switch_to.alert
+print("Confirm alert text:", confirm_alert.text)
+confirm_alert.dismiss()  # click Cancel
+
+# 3. Prompt Alert
+prompt_button = wait.until(EC.element_to_be_clickable((By.ID, "promtButton")))
+prompt_button.click()
+prompt_alert = driver.switch_to.alert
+print("Prompt alert text:", prompt_alert.text)
+prompt_alert.send_keys("Masfie")
+prompt_alert.accept()  # click OK
+
+# Optional: print result message from prompt
+prompt_result = driver.find_element(By.ID, "promptResult").text
+print(prompt_result)
+
+driver.quit()
